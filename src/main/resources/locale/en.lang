@@ -1,0 +1,21 @@
+[terraformer]
+terraformertip1=Right-click on item to open settings.
+terraformertip2=Left-click in world to place tiles from inventory.
+terraformertip3=Right-click in world to remove tiles.
+terraformertip4=Only removes tiles of the same stored type.
+terraformertip5=If there is no tile stored, the first tile removed is used.
+terraformertip6=Orange square indicates the first tile.
+terraformertip7=Everything else pails in comparison.
+terraformercontrolsizeup=Terraformer Shape Size +
+terraformercontrolsizedown=Terraformer Shape Size -
+decreasesize=Shape Size -
+increasesize=Shape Size +
+shapeadjustment=Size:
+shapeslector=Select Shape
+[terraformer.shapes]
+square=Square
+line=Line
+circle=Circle
+ring=Ring
+[item]
+terraformer=Terraformer
