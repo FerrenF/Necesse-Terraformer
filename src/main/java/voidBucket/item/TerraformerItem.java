@@ -280,7 +280,7 @@ public class TerraformerItem extends PouchItem implements TickItem,UpgradableIte
 		public void onMouseHoverTile(InventoryItem me, GameCamera camera, PlayerMob perspective, int mouseX, int mouseY,
 				TilePosition pos, boolean isDebug) {
 			
-			if(active && perspective!=null) {
+			if(active && perspective!=null && perspective.getLevel() != null) {
 				
 				if(this.currentShape.shapeID == Shape.LINE) {
 					ShapeSelectionLine cl = ((ShapeSelectionLine)this.currentShape);
