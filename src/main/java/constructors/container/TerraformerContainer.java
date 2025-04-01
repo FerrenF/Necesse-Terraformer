@@ -1,4 +1,4 @@
-package voidBucket.container;
+package constructors.container;
 
 import necesse.inventory.container.ContainerTransferResult;
 import necesse.inventory.container.SlotIndexRange;
@@ -6,15 +6,11 @@ import necesse.inventory.container.SlotIndexRange;
 import necesse.engine.network.NetworkClient;
 import necesse.engine.network.Packet;
 import necesse.entity.mobs.PlayerMob;
-import necesse.inventory.Inventory;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.container.customAction.EmptyCustomAction;
 import necesse.inventory.container.item.ItemInventoryContainer;
 import necesse.inventory.container.slots.ContainerSlot;
-import necesse.inventory.container.slots.InternalInventoryItemContainerSlot;
-import necesse.inventory.item.miscItem.InternalInventoryItemInterface;
 import necesse.inventory.item.placeableItem.tileItem.TileItem;
-import voidBucket.item.TerraformerItem;
 
 
 public class TerraformerContainer extends ItemInventoryContainer {

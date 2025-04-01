@@ -5,17 +5,30 @@ terraformertip3=Right-click in world to remove tiles.
 terraformertip4=Only removes tiles of the same stored type.
 terraformertip5=If there is no tile stored, the first tile removed is used.
 terraformertip6=Orange square indicates the first tile.
-terraformertip7=Everything else pails in comparison.
-terraformercontrolsizeup=Terraformer Shape Size +
-terraformercontrolsizedown=Terraformer Shape Size -
+terraformertip7=It's worlds apart.
+terraformercontrolsizeup=Terraformer/Builder Size +
+terraformercontrolsizedown=Terraformer/Builder Size -
 decreasesize=Shape Size -
 increasesize=Shape Size +
 shapeadjustment=Size:
 shapeslector=Select Shape
-[terraformer.shapes]
+[constructor.shapes]
 square=Square
+linebox=Line Box
 line=Line
 circle=Circle
 ring=Ring
+checkerboard=Checkerboard
+
+[builder]
+buildertip1=Right-click on item to open settings.
+buildertip2=Left-click in world to place objects from inventory.
+buildertip3=Right-click in world to remove objects.
+buildertip4=Only removes objects of the same stored type.
+buildertip5=If there is no object stored, the first object removed is used.
+buildertip6=Orange square indicates the first object.
+buildertip7=Purely object-ive.
+
 [item]
 terraformer=Terraformer
+builder=Builder

@@ -1,4 +1,4 @@
-package voidBucket.patch;
+package constructors.patch;
 
 import java.util.ArrayList;
 
@@ -18,6 +18,7 @@ public class ElderShopPatch {
             @Advice.Argument(1) ServerClient client,  // Fixed argument index
             @Advice.Return(readOnly = false) ArrayList<ShopItem> out) {	      
 		
-		out.add(ShopItem.item("terraformer", 2500));		
+		out.add(ShopItem.item("terraformer", 2500));	
+		out.add(ShopItem.item("builder", 2500));	
     }
 }
