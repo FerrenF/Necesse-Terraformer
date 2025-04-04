@@ -101,7 +101,7 @@ public class TerraformerItem extends ConstructorItem {
 											tilesExpended+=1;		
 										}		
 										
-										level.sendTileChangePacket(level.getServer(), targetTile.tileX, targetTile.tileY, targetTile.tile.getDestroyedTile());
+										level.sendTileChangePacket(level.getServer(), targetTile.tileX, targetTile.tileY, tileInBucket.tileID);
 										level.tileLayer.setIsPlayerPlaced(targetTile.tileX, targetTile.tileY, true);
 	
 									}
