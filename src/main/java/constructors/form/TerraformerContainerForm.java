@@ -66,14 +66,14 @@ public class TerraformerContainerForm<T extends TerraformerContainer> extends Co
 		iconMinusComponent = new FormIconButton(0, 0, bst_Minus, 20, 20, new LocalMessage("terraformer", "decreasesize"));
 		iconMinusComponent.onClicked((event)->{
 			if(playerTerraformer == null) return;
-			playerTerraformer.modShapeSize(-1);
+			playerTerraformer.modShapeSize(-1, container.getInventoryItem());
 		});
 		
 		shapeSizeLabelText = new FormLocalLabel("shapesize", "0", new FontOptions(16), 0, 0, 0, 20);
 		iconPlusComponent = new FormIconButton(0, 0, bst_Plus, 20, 20, new LocalMessage("terraformer", "increasesize"));
 		iconPlusComponent.onClicked((event)->{
 			if(playerTerraformer == null) return;
-			playerTerraformer.modShapeSize(1);
+			playerTerraformer.modShapeSize(1, container.getInventoryItem());
 		});
 		
 		

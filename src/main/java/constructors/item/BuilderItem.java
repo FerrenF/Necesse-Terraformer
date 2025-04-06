@@ -21,6 +21,7 @@ import necesse.engine.network.packet.PacketOpenContainer;
 import necesse.engine.network.server.ServerClient;
 import necesse.engine.registries.ContainerRegistry;
 import necesse.engine.registries.ObjectRegistry;
+import necesse.engine.registries.TileRegistry;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.window.WindowManager;
 import necesse.entity.mobs.PlayerMob;
@@ -38,6 +39,7 @@ import necesse.inventory.item.Item;
 import necesse.inventory.item.ItemStatTipList;
 import necesse.inventory.item.placeableItem.objectItem.ObjectItem;
 import necesse.inventory.item.upgradeUtils.UpgradedItem;
+import necesse.inventory.recipe.Ingredient;
 import necesse.level.gameObject.GameObject;
 import necesse.level.gameObject.ObjectPlaceOption;
 import necesse.level.gameObject.WallObject;
@@ -54,6 +56,9 @@ public class BuilderItem extends ConstructorItem {
 		public BuilderItem() {
 			super();	
 			BuilderContainerForm.playerTerraformer = this;	
+			
+			this.maxPlacementRange.setBaseValue(12).setUpgradedValue(1.0F, 18);
+			this.maxShapeSize.setBaseValue(6).setUpgradedValue(1.0F, 10);
 		}
 		
 		@Override
@@ -70,8 +75,9 @@ public class BuilderItem extends ConstructorItem {
 		}
 		
 		@Override
-		public ListGameTooltips getTooltips(InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
-			ListGameTooltips tooltips = super.getTooltips(item, perspective, blackboard);			
+		public ListGameTooltips getPreEnchantmentTooltips(InventoryItem item, PlayerMob perspective,
+				GameBlackboard blackboard) {
+			ListGameTooltips tooltips = new ListGameTooltips();			
 			tooltips.add(Localization.translate("builder", "buildertip1"));
 			tooltips.add(Localization.translate("builder", "buildertip2"));
 			tooltips.add(Localization.translate("builder", "buildertip3"));
@@ -79,6 +85,7 @@ public class BuilderItem extends ConstructorItem {
 			tooltips.add(Localization.translate("builder", "buildertip5"));
 			tooltips.add(Localization.translate("builder", "buildertip6"));
 			tooltips.add(Localization.translate("builder", "buildertip7"));
+			tooltips.add(super.getPreEnchantmentTooltips(item, perspective, blackboard));
 			return tooltips;
 		}
 				
@@ -91,7 +98,7 @@ public class BuilderItem extends ConstructorItem {
 			if(currentlyHighlightedTiles!=null) {
 				
 				LevelTile[][] cloneTiles = this.getSelectedTiles();
-				this.clearOutOfRangeTiles(cloneTiles,(PlayerMob)attackerMob, this.maxPlacementRange);
+				this.clearOutOfRangeTiles(cloneTiles,(PlayerMob)attackerMob, this.maxPlacementRange.getValue(this.getUpgradeTier(me)));
 				
 				int objectsExpended = 0;
 				for(int i=0;i<cloneTiles.length;i++) {
@@ -169,7 +176,7 @@ public class BuilderItem extends ConstructorItem {
 			if(currentlyHighlightedTiles!=null) {
 				
 				LevelTile[][] cloneTiles = this.getSelectedTiles();
-				this.clearOutOfRangeTiles(cloneTiles,(PlayerMob)attackerMob, this.maxPlacementRange);
+				this.clearOutOfRangeTiles(cloneTiles,(PlayerMob)attackerMob, this.maxPlacementRange.getValue(this.getUpgradeTier(me)));
 				int addCurrentObjects = 0;
 				for(int i=0;i<cloneTiles.length;i++) {
 					for(int j=0;j<cloneTiles[i].length;j++) {
@@ -256,7 +263,7 @@ public class BuilderItem extends ConstructorItem {
 						camera,
 						currentlyHighlightedTiles,
 						objID,
-						this.maxPlacementRange,
+						this.maxPlacementRange.getValue(this.getUpgradeTier(me)),
 						
 							(lvObj)->{
 								return lvObj.level.objectLayer.getObject(lvObj.tileX, lvObj.tileY);
@@ -431,20 +438,7 @@ public class BuilderItem extends ConstructorItem {
 		public boolean isValidRequestType(Item.Type type) {
 			return false;
 		}
-
-		@Override
-		public void addUpgradeStatTips(ItemStatTipList arg0, InventoryItem arg1, InventoryItem arg2,
-				ItemAttackerMob arg3, ItemAttackerMob arg4) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public UpgradedItem getUpgradedItem(InventoryItem arg0) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
+		
 		public InventoryItem getObjectInvItem(InventoryItem me) {
 			if(hasObject(me)) { 		
 				Inventory _me = this.getInternalInventory(me);
@@ -515,5 +509,28 @@ public class BuilderItem extends ConstructorItem {
 			Inventory _me = this.getInternalInventory(me);
 			_me.addItem(level, player, newItem, "give", null);		
 			 this.saveInternalInventory(me, _me);
+		}
+
+		@Override
+		protected Ingredient[] getSpecialUpgradeCost(int nextTier) {
+			switch(nextTier) {
+			case 1: return new Ingredient[]{
+					new Ingredient(ObjectRegistry.getObject("woodwall").getObjectItem().getStringID(), 250)
+			};
+			case 2:return new Ingredient[]{
+					new Ingredient(ObjectRegistry.getObject(776).getObjectItem().getStringID(), 250),
+					new Ingredient(ObjectRegistry.getObject(797).getObjectItem().getStringID(), 250),
+					new Ingredient(ObjectRegistry.getObject(786).getObjectItem().getStringID(), 250),
+			};
+			case 3:return new Ingredient[]{
+					new Ingredient(ObjectRegistry.getObject(827).getObjectItem().getStringID(), 250),
+					new Ingredient(ObjectRegistry.getObject(863).getObjectItem().getStringID(), 250),
+					new Ingredient(ObjectRegistry.getObject(839).getObjectItem().getStringID(), 250),
+			};
+			case 4:return new Ingredient[]{
+					new Ingredient(ObjectRegistry.getObject(129).getObjectItem().getStringID(), 500)
+			};
+			default: return new Ingredient[]{new Ingredient("upgradeshard", nextTier * 200)};
+		}	
 		}	
 	}

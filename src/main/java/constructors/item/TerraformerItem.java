@@ -5,8 +5,6 @@ import constructors.ConstructorsMod;
 import constructors.container.TerraformerContainer;
 import constructors.drawables.ConstructorTileDrawable;
 import constructors.form.TerraformerContainerForm;
-import constructors.item.ConstructorItem.Shape;
-import constructors.item.ConstructorItem.ShapeSelectionLineBox;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.network.packet.PacketOpenContainer;
@@ -24,9 +22,8 @@ import necesse.inventory.InventoryAddConsumer;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.PlayerInventorySlot;
 import necesse.inventory.item.Item;
-import necesse.inventory.item.ItemStatTipList;
 import necesse.inventory.item.placeableItem.tileItem.TileItem;
-import necesse.inventory.item.upgradeUtils.UpgradedItem;
+import necesse.inventory.recipe.Ingredient;
 import necesse.level.gameTile.GameTile;
 import necesse.level.maps.Level;
 import necesse.level.maps.LevelTile;
@@ -35,10 +32,11 @@ import necesse.level.maps.TilePosition;
 public class TerraformerItem extends ConstructorItem {
 		
 		public static final boolean SR_NO_MODIFY = true;	
-						
 		public TerraformerItem() {
 			super();
 			TerraformerContainerForm.playerTerraformer = this;	
+			this.maxPlacementRange.setBaseValue(12).setUpgradedValue(1.0F, 18);
+			this.maxShapeSize.setBaseValue(6).setUpgradedValue(1.0F, 10);
 		}
 		
 		@Override
@@ -55,8 +53,9 @@ public class TerraformerItem extends ConstructorItem {
 		}
 		
 		@Override
-		public ListGameTooltips getTooltips(InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
-			ListGameTooltips tooltips = super.getTooltips(item, perspective, blackboard);			
+		public ListGameTooltips getPreEnchantmentTooltips(InventoryItem item, PlayerMob perspective,
+				GameBlackboard blackboard) {			
+			ListGameTooltips tooltips = new ListGameTooltips();		
 			tooltips.add(Localization.translate("terraformer", "terraformertip1"));
 			tooltips.add(Localization.translate("terraformer", "terraformertip2"));
 			tooltips.add(Localization.translate("terraformer", "terraformertip3"));
@@ -64,6 +63,7 @@ public class TerraformerItem extends ConstructorItem {
 			tooltips.add(Localization.translate("terraformer", "terraformertip5"));
 			tooltips.add(Localization.translate("terraformer", "terraformertip6"));
 			tooltips.add(Localization.translate("terraformer", "terraformertip7"));
+			tooltips.add(super.getPreEnchantmentTooltips(item, perspective, blackboard));
 			return tooltips;
 		}
 				
@@ -74,7 +74,7 @@ public class TerraformerItem extends ConstructorItem {
 			ArrayList<TileItem> replacedTiles = new ArrayList<TileItem>();	
 			if(currentlyHighlightedTiles!=null) {
 				LevelTile[][] cloneTiles = currentlyHighlightedTiles.clone();	
-				this.clearOutOfRangeTiles(cloneTiles,(PlayerMob)attackerMob, this.maxPlacementRange);
+				this.clearOutOfRangeTiles(cloneTiles,(PlayerMob)attackerMob, this.maxPlacementRange.getValue(this.getUpgradeTier(me)));
 				int tilesExpended = 0;
 				for(int i=0;i<cloneTiles.length;i++) {
 					for(int j=0;j<cloneTiles[i].length;j++) {
@@ -99,11 +99,12 @@ public class TerraformerItem extends ConstructorItem {
 												replacedTiles.add(highlightedTileItem);											
 											}											
 											tilesExpended+=1;		
+											
+											level.sendTileChangePacket(level.getServer(), targetTile.tileX, targetTile.tileY, tileInBucket.tileID);
+											level.tileLayer.setIsPlayerPlaced(targetTile.tileX, targetTile.tileY, true);					
 										}		
-										
-										level.sendTileChangePacket(level.getServer(), targetTile.tileX, targetTile.tileY, tileInBucket.tileID);
-										level.tileLayer.setIsPlayerPlaced(targetTile.tileX, targetTile.tileY, true);
-	
+									
+												
 									}
 								}	
 						}				
@@ -135,7 +136,7 @@ public class TerraformerItem extends ConstructorItem {
 			PlayerMob p = (PlayerMob)attackerMob;
 			if(currentlyHighlightedTiles!=null) {
 				LevelTile[][] cloneTiles = currentlyHighlightedTiles.clone();	
-				this.clearOutOfRangeTiles(cloneTiles,(PlayerMob)attackerMob, this.maxPlacementRange);
+				this.clearOutOfRangeTiles(cloneTiles,(PlayerMob)attackerMob, this.maxPlacementRange.getValue(this.getUpgradeTier(me)));
 				int addTiles = 0;
 				for(int i=0;i<cloneTiles.length;i++) {
 					for(int j=0;j<cloneTiles[i].length;j++) {
@@ -153,11 +154,10 @@ public class TerraformerItem extends ConstructorItem {
 								InventoryItem newItem = new InventoryItem(targetTile.tile.getTileItem());
 								newItem.setAmount(1);
 								setTile(level, p, me, newItem);		
-							}							
-			
-							level.sendTileChangePacket(level.getServer(), targetTile.tileX, targetTile.tileY, targetTile.tile.getDestroyedTile());
-							level.tileLayer.setIsPlayerPlaced(targetTile.tileX, targetTile.tileY, true);
-						
+								
+								level.sendTileChangePacket(level.getServer(), targetTile.tileX, targetTile.tileY, targetTile.tile.getDestroyedTile());
+								level.tileLayer.setIsPlayerPlaced(targetTile.tileX, targetTile.tileY, true);
+							}											
 						}
 						else if((targetTile.tile.getID() == getCurrentTile(me).tileID)) {		
 							
@@ -221,7 +221,7 @@ public class TerraformerItem extends ConstructorItem {
 						camera,
 						currentlyHighlightedTiles,
 						tileID,
-						this.maxPlacementRange,
+						this.maxPlacementRange.getValue(this.getUpgradeTier(me)),
 						
 							(lvTile)->{
 								return lvTile.tile;
@@ -268,20 +268,9 @@ public class TerraformerItem extends ConstructorItem {
 		public boolean isValidRequestType(Item.Type type) {
 			return false;
 		}
-
-		@Override
-		public void addUpgradeStatTips(ItemStatTipList arg0, InventoryItem arg1, InventoryItem arg2,
-				ItemAttackerMob arg3, ItemAttackerMob arg4) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public UpgradedItem getUpgradedItem(InventoryItem arg0) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
+		
+		
+		
 		public InventoryItem getTileInvItem(InventoryItem me) {
 			if(hasTile(me)) { 		
 				Inventory _me = this.getInternalInventory(me);
@@ -352,5 +341,38 @@ public class TerraformerItem extends ConstructorItem {
 			Inventory _me = this.getInternalInventory(me);
 			_me.addItem(level, player, newItem, "give", null);		
 			 this.saveInternalInventory(me, _me);
+		}
+
+		@Override
+		protected Ingredient[] getSpecialUpgradeCost(int nextTier) {
+			
+			switch(nextTier) {
+				case 1: return new Ingredient[]{
+						new Ingredient(TileRegistry.getTile(TileRegistry.grassID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.snowID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.sandID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.plainsGrassID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.swampGrassID).getTileItem().getStringID(), 250)										
+				};
+				case 2: return new Ingredient[]{
+						new Ingredient(TileRegistry.getTile(TileRegistry.rockID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.sandstoneID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.swampRockID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.graniteRockID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.snowRockID).getTileItem().getStringID(), 250)										
+				};
+				case 3: return new Ingredient[]{
+						new Ingredient(TileRegistry.getTile(TileRegistry.deepRockID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.deepSandstoneID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.deepSwampRockID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.deepStoneFloorID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.deepSnowRockID).getTileItem().getStringID(), 250)										
+				};
+				case 4: return new Ingredient[]{
+						new Ingredient(TileRegistry.getTile(TileRegistry.dungeonFloorID).getTileItem().getStringID(), 250),
+						new Ingredient(TileRegistry.getTile(TileRegistry.lavaID).getTileItem().getStringID(), 100)									
+				};
+				default: return new Ingredient[]{new Ingredient("upgradeshard", nextTier * 200)};
+			}		
 		}	
 	}

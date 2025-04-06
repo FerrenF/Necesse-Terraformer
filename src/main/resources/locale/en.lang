@@ -12,6 +12,7 @@ decreasesize=Shape Size -
 increasesize=Shape Size +
 shapeadjustment=Size:
 shapeslector=Select Shape
+
 [constructor.shapes]
 square=Square
 linebox=Line Box
@@ -19,6 +20,13 @@ line=Line
 circle=Circle
 ring=Ring
 checkerboard=Checkerboard
+
+[constructor.ui]
+itemupgradelimit=Can't upgrade any further.
+itemupgradeable=§9Upgrade at an upgrade station for better range and size.
+[constructor.itemtooltip]
+rangetip=Max Range: <value>
+sizetip=Max Shape Size: <value>
 
 [builder]
 buildertip1=Right-click on item to open settings.
