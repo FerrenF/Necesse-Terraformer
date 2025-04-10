@@ -7,8 +7,8 @@ plugins {
 
 project.ext.modID = "terraformer" // The unique id of your mod. Must be all lowercase and cannot use special characters.
 project.ext.modName = "Terraformer" // The display name of your mod.
-project.ext.modVersion = "1.1.3" // Your current builds version. Must follow the xx.xx... format.
-project.ext.gameVersion = "0.31.1" // The target game version.
+project.ext.modVersion = "1.1.4" // Your current builds version. Must follow the xx.xx... format.
+project.ext.gameVersion = "0.32.0" // The target game version.
 project.ext.modDescription = "A set of tools for bulk building and terraforming on your island." // Short description of what your mod is.
 project.ext.author = "FerrenFx" // Your name
 

@@ -30,7 +30,14 @@ Choose from square shape, line shape, circle shape or ring shape. Adjust the siz
 * When placing tiles, the placed tiles will be added to the inventory.
 * When scooping tiles, overflow will be placed into the player's inventory.
 * The direction of the line is based on the character's facing in-game.
+* **Upgradeable** You can upgrade this item at the `Upgrade Station` for greater range and size.
 
+## Known 'Bugs'
+* When you place objects on water, breaking one of the objects will break all neighboring objects. This is by design in the base game, and I do not plan to modify this for now. Really, you shouldn't be able to place objects on water at all, but it looks cool so I'll secretly keep it.
 
 ## Feedback & Support  
 If you encounter any issues or have feature suggestions, feel free to reach out! @ferrenfx on Necesse's discord's #modding channel.
+
+## Update History
+
+1.1.4 - Updated to Necesse patch 0.32.0. Moved the `Upgrade Station` recipe to the `Tungsten Workstation` and changed the ingredients for it.
