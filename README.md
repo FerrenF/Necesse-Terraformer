@@ -40,4 +40,5 @@ If you encounter any issues or have feature suggestions, feel free to reach out!
 
 ## Update History
 
+1.1.5 - Hotfix for builder upgrade items.
 1.1.4 - Updated to Necesse patch 0.32.0. Moved the `Upgrade Station` recipe to the `Tungsten Workstation` and changed the ingredients for it.

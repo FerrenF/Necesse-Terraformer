@@ -21,7 +21,6 @@ import necesse.engine.network.packet.PacketOpenContainer;
 import necesse.engine.network.server.ServerClient;
 import necesse.engine.registries.ContainerRegistry;
 import necesse.engine.registries.ObjectRegistry;
-import necesse.engine.registries.TileRegistry;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.window.WindowManager;
 import necesse.entity.mobs.PlayerMob;
@@ -36,9 +35,7 @@ import necesse.inventory.InventoryAddConsumer;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.PlayerInventorySlot;
 import necesse.inventory.item.Item;
-import necesse.inventory.item.ItemStatTipList;
 import necesse.inventory.item.placeableItem.objectItem.ObjectItem;
-import necesse.inventory.item.upgradeUtils.UpgradedItem;
 import necesse.inventory.recipe.Ingredient;
 import necesse.level.gameObject.GameObject;
 import necesse.level.gameObject.ObjectPlaceOption;
@@ -518,17 +515,17 @@ public class BuilderItem extends ConstructorItem {
 					new Ingredient(ObjectRegistry.getObject("woodwall").getObjectItem().getStringID(), 250)
 			};
 			case 2:return new Ingredient[]{
-					new Ingredient(ObjectRegistry.getObject(776).getObjectItem().getStringID(), 250),
-					new Ingredient(ObjectRegistry.getObject(797).getObjectItem().getStringID(), 250),
-					new Ingredient(ObjectRegistry.getObject(786).getObjectItem().getStringID(), 250),
+					new Ingredient(ObjectRegistry.getObject("sandstonerock").getObjectItem().getStringID(), 250),
+					new Ingredient(ObjectRegistry.getObject("rock").getObjectItem().getStringID(), 250),
+					new Ingredient(ObjectRegistry.getObject("snowrock").getObjectItem().getStringID(), 250),
 			};
 			case 3:return new Ingredient[]{
-					new Ingredient(ObjectRegistry.getObject(827).getObjectItem().getStringID(), 250),
-					new Ingredient(ObjectRegistry.getObject(863).getObjectItem().getStringID(), 250),
-					new Ingredient(ObjectRegistry.getObject(839).getObjectItem().getStringID(), 250),
+					new Ingredient(ObjectRegistry.getObject("deepsandstonerock").getObjectItem().getStringID(), 250),
+					new Ingredient(ObjectRegistry.getObject("deepsnowrock").getObjectItem().getStringID(), 250),
+					new Ingredient(ObjectRegistry.getObject("deeprock").getObjectItem().getStringID(), 250),
 			};
 			case 4:return new Ingredient[]{
-					new Ingredient(ObjectRegistry.getObject(129).getObjectItem().getStringID(), 500)
+					new Ingredient(ObjectRegistry.getObject("dungeonwall").getObjectItem().getStringID(), 500)
 			};
 			default: return new Ingredient[]{new Ingredient("upgradeshard", nextTier * 200)};
 		}	
