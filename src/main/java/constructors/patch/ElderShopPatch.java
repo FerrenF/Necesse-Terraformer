@@ -1,24 +1,16 @@
 package constructors.patch;
 
-import java.util.ArrayList;
-
-import necesse.engine.modLoader.annotations.ModMethodPatch;
-import necesse.engine.network.server.ServerClient;
+import necesse.engine.modLoader.annotations.ModConstructorPatch;
 import necesse.entity.mobs.friendly.human.ElderHumanMob;
-import necesse.level.maps.levelData.villageShops.ShopItem;
-import necesse.level.maps.levelData.villageShops.VillageShopsData;
+import necesse.entity.mobs.friendly.human.humanShop.SellingShopItem;
 import net.bytebuddy.asm.Advice;
 
-@ModMethodPatch(target = ElderHumanMob.class, name = "getShopItems", arguments = {VillageShopsData.class, ServerClient.class})
+@ModConstructorPatch(target = ElderHumanMob.class, arguments = {})
 public class ElderShopPatch {
 	
 	@Advice.OnMethodExit
-    static void onExit(@Advice.This ElderHumanMob th, 
-            @Advice.Argument(0) VillageShopsData data, 
-            @Advice.Argument(1) ServerClient client,  // Fixed argument index
-            @Advice.Return(readOnly = false) ArrayList<ShopItem> out) {	      
-		
-		out.add(ShopItem.item("terraformer", 2500));	
-		out.add(ShopItem.item("builder", 2500));	
+    static void onExit(@Advice.This ElderHumanMob th) {	      
+		th.shop.addSellingItem("terraformer",  new SellingShopItem().setRandomPrice(3000, 5000));
+		th.shop.addSellingItem("builder",  new SellingShopItem().setRandomPrice(3000, 5000));
     }
 }
