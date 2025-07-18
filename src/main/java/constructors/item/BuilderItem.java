@@ -1,6 +1,7 @@
 package constructors.item;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -121,23 +122,25 @@ public class BuilderItem extends ConstructorItem {
 												targetTile.tileY * 32, 
 												BuilderItem.this.getObjectInvItem(me),
 												
-												(PlayerMob)attackerMob);
+												(PlayerMob)attackerMob,(Line2D) null, true);
 										
+											if(po != null) {
 												boolean canPlace = true;		
 												String checkResult = objectInBucket.getObject().canPlace(level, po.tileX*32, po.tileY*32, po.rotation, true) ;
 												canPlace = canPlace && checkResult != "liquid" && checkResult != "shore";
 												
-												if(po != null && canPlace){			
-													
-													if(level.isServer()) {
-														if(highlightedObjectItem != null &&
-																highlightedObjectItem.getObject().getID() != ObjectRegistry.getObjectID("air")) {
-															replacedObjects.add(highlightedObjectItem);											
-														}											
-													objectsExpended+=1;		
-													objectInBucket.getObject().placeObject(level, po.tileX, po.tileY, po.rotation, true);	
-													level.sendObjectUpdatePacket(po.tileX, po.tileY);
-												}								
+													if(canPlace){			
+														
+														if(level.isServer()) {
+															if(highlightedObjectItem != null &&
+																	highlightedObjectItem.getObject().getID() != ObjectRegistry.getObjectID("air")) {
+																replacedObjects.add(highlightedObjectItem);											
+															}											
+														objectsExpended+=1;		
+														objectInBucket.getObject().placeObject(level, po.tileX, po.tileY, po.rotation, true);	
+														level.sendObjectUpdatePacket(po.tileX, po.tileY);
+													}		
+												}
 										}
 									}
 								}	
@@ -284,15 +287,17 @@ public class BuilderItem extends ConstructorItem {
 								tile.tileX * 32, 
 								tile.tileY * 32, 
 								BuilderItem.this.getObjectInvItem(me),
-								perspective);
+								perspective, (Line2D) null, true);
 						
+						if(po != null) {
 						boolean canPlace = true;		
 						String checkResult = objectInBucket.getObject().canPlace(level, po.tileX, po.tileY, po.rotation, true) ;
 						canPlace = canPlace && checkResult != "liquid" && checkResult != "shore";
 						
-						if (po != null && canPlace) {		
-							float alpha = 0.5F;						
-							po.object.drawMultiTilePreview(level, po.tileX, po.tileY, po.rotation, alpha, perspective, camera);
+							if (canPlace) {		
+								float alpha = 0.5F;						
+								po.object.drawMultiTilePreview(level, po.tileX, po.tileY, po.rotation, alpha, perspective, camera);
+							}
 						}
 					}
 					

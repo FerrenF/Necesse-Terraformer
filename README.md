@@ -40,10 +40,16 @@ If you encounter any issues or have feature suggestions, feel free to reach out!
 
 ## Update History
 
-1.1.6 - Hotfix for item not showing up in elder shop.
+1.1.8 - Patch for necesse 0.33.0  
 
 
-1.1.5 - Hotfix for builder upgrade items.
+1.1.7 - Hotfix for DS issues.
 
 
-1.1.4 - Updated to Necesse patch 0.32.0. Moved the `Upgrade Station` recipe to the `Tungsten Workstation` and changed the ingredients for it.
+1.1.6 - Hotfix for item not showing up in elder shop.  
+
+
+1.1.5 - Hotfix for builder upgrade items.  
+
+
+1.1.4 - Updated to Necesse patch 0.32.0. Moved the `Upgrade Station` recipe to the `Tungsten Workstation` and changed the ingredients for it.  
